@@ -33,6 +33,7 @@ int main() {
 	SPCR = 0b01010001; //enable the SPI, set to main mode 0, SCK = Fosc/16, lead with MSB
 	
 	sendMAX7221(0b00001001, 0b11111111); //set decoding mode on (all bits)
+	sendMAX7221(0b00001010, 0b00000111); //set intensity of light
 	sendMAX7221(0b00001011, 0b00000010); //setting scan limit to 2
 	sendMAX7221(0b00001100, 0b00000001); //turn on display
 	
@@ -69,11 +70,11 @@ int main() {
 		if((UpperByte & 0x10) == 0x10) //TA < 0 C
 		{
 			UpperByte = UpperByte & 0x0F; //Clear SIGN bit
-			temperatureC = 256 - (UpperByte*16+LowerByte/16); //Convert reading into temperature in C
+			temperatureC = 256 - (UpperByte*16+LowerByte); //Convert reading into temperature in C
 		}
 		else
 		{
-			temperatureC = (UpperByte*16+LowerByte/16); //Convert reading into temperature in C
+			temperatureC = (UpperByte*16+LowerByte); //Convert reading into temperature in C
 		}	
 		
 		//Convert to Temp in Fahrenheit
