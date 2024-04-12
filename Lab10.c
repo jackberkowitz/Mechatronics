@@ -22,7 +22,8 @@ int sendMAX7221(unsigned char, unsigned char);
 int main() {
 	
 	//variables needed:
-	int temperature;
+	int temperatureC;
+	int temperatureF;
 	int temp0;
 	int temp1;
 	unsigned char UpperByte;
@@ -68,19 +69,23 @@ int main() {
 		if((UpperByte & 0x10) == 0x10) //TA < 0 C
 		{
 			UpperByte = UpperByte & 0x0F; //Clear SIGN bit
-			temperature = 256 - (UpperByte*16+LowerByte/16); //Convert reading into temperature in C
+			temperatureC = 256 - (UpperByte*16+LowerByte/16); //Convert reading into temperature in C
 		}
 		else
 		{
-			temperature = (UpperByte*16+LowerByte/16); //Convert reading into temperature in C
+			temperatureC = (UpperByte*16+LowerByte/16); //Convert reading into temperature in C
 		}	
 		
-		temp0 = temperature/10%10; //tens digit of resulting temp
-		temp1 = temperature%10; //ones digit of resulting temp
+		//Convert to Temp in Fahrenheit
+		temperatureF = temperature*(9/5)+32;
+		
+		temp0 = temperatureF/10%10; //tens digit of resulting temp
+		temp1 = temperatureF%10; //ones digit of resulting temp
 		
 		sendMAX7221(0b00000001,temp0); //digit 0
 		sendMAX7221(0b00000010,temp1); //digit 1
-		wait(1000); 
+		
+		wait(1000); //wait 1 second between intervals
 	}
 	
 }
