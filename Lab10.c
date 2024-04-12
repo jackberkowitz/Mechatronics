@@ -22,7 +22,8 @@ int sendMAX7221(unsigned char, unsigned char);
 int main() {
 	
 	//variables needed:
-	int temperatureC;
+	float temperatureC;
+	float temperatureF_float;
 	int temperatureF;
 	int temp0;
 	int temp1;
@@ -42,7 +43,7 @@ int main() {
 	// I2C (TWI) Setup
 	//If needed, turn on TWI power: PRR = PRR & 0b01111111; // Ensure that TWI is powered on (PRTWI = 0)
 	DDRC = 0b00000000; // Define all PORTC bits as input (specifically PC4 and PC5)
-	PORTC = PORTB | 0b00110000;  // set internal pull-up resistors on SCL and SDA lines (PC5 and PC4) ofr I2C bus
+	PORTC = PORTB | 0b00110000;  // set internal pull-up resistors on SCL and SDA lines (PC5 and PC4) of I2C bus
 	i2c_init();
 	
 	// I2C Write data as Main. Writing to Resolution Register of MCP9808 Temperature Sensor
@@ -70,15 +71,16 @@ int main() {
 		if((UpperByte & 0x10) == 0x10) //TA < 0 C
 		{
 			UpperByte = UpperByte & 0x0F; //Clear SIGN bit
-			temperatureC = 256 - (UpperByte*16+LowerByte); //Convert reading into temperature in C
+			temperatureC = 256 - (UpperByte*16+LowerByte/16); //Convert reading into temperature in C
 		}
 		else
 		{
-			temperatureC = (UpperByte*16+LowerByte); //Convert reading into temperature in C
+			temperatureC = (UpperByte*16+LowerByte/16); //Convert reading into temperature in C
 		}	
 		
 		//Convert to Temp in Fahrenheit
-		temperatureF = temperatureC*(9/5)+32;
+		temperatureF_float = temperatureC*(9/5)+32;
+		temperatureF = temperatureF_float
 		
 		temp0 = temperatureF/10%10; //tens digit of resulting temp
 		temp1 = temperatureF%10; //ones digit of resulting temp
