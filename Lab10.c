@@ -22,8 +22,7 @@ int sendMAX7221(unsigned char, unsigned char);
 int main() {
 	
 	//variables needed:
-	float temperatureC;
-	float temperatureF_float;
+	int temperatureC;
 	int temperatureF;
 	int temp0;
 	int temp1;
@@ -79,8 +78,7 @@ int main() {
 		}	
 		
 		//Convert to Temp in Fahrenheit
-		temperatureF_float = temperatureC*(9/5)+32;
-		temperatureF = temperatureF_float
+		temperatureF = temperatureC*(1.8)+32;
 		
 		temp0 = temperatureF/10%10; //tens digit of resulting temp
 		temp1 = temperatureF%10; //ones digit of resulting temp
