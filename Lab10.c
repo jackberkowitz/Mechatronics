@@ -77,7 +77,7 @@ int main() {
 		}	
 		
 		//Convert to Temp in Fahrenheit
-		temperatureF = temperature*(9/5)+32;
+		temperatureF = temperatureC*(9/5)+32;
 		
 		temp0 = temperatureF/10%10; //tens digit of resulting temp
 		temp1 = temperatureF%10; //ones digit of resulting temp
